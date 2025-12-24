@@ -27,19 +27,10 @@ export default async function DashboardLayout({
 
   const user = await getCurrentUser();
 
-  // Get saved companies count
-  let savedCompaniesCount = 0;
-  if (user?.id) {
-    savedCompaniesCount = await prisma.savedCompany.count({
-      where: { userId: user.id }
-    });
-  }
-
   const userData = {
     name: user?.name || session?.user?.name || null,
     plan: user?.plan || 'free',
     role: user?.role || 'buyer',
-    savedCompaniesCount,
   };
 
   return (

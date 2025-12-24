@@ -30,11 +30,11 @@ const SORTED_COMPANY_TYPES: { group: string; types: CompanyType[] }[] = [
   },
   {
     group: 'Distribution',
-    types: ['distributor', 'wholesaler', 'importer', 'exporter'],
+    types: ['distributor', 'wholesaler'],
   },
   {
     group: 'Retail',
-    types: ['retailer', 'ecommerce', 'pharmacy_chain'],
+    types: ['retailer'],
   },
   {
     group: 'Services',

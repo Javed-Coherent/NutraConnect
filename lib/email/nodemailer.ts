@@ -185,3 +185,43 @@ export async function sendWelcomeEmail(
     return { success: false, error: 'Failed to send welcome email' };
   }
 }
+
+/**
+ * Send workspace email via Nodemailer (Gmail SMTP)
+ */
+export async function sendWorkspaceEmail(params: {
+  to: string;
+  subject: string;
+  body: string;
+  fromName?: string;
+}): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    const transport = getTransporter();
+
+    if (!transport) {
+      return { success: false, error: 'SMTP not configured' };
+    }
+
+    const info = await transport.sendMail({
+      from: FROM_EMAIL,
+      to: params.to,
+      subject: params.subject,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <div style="white-space: pre-wrap; color: #1f2937; line-height: 1.6;">
+            ${params.body.replace(/\n/g, '<br/>')}
+          </div>
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
+          <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+            Sent via <a href="https://nutraconnect.in" style="color: #0d9488;">NutraConnect</a>
+          </p>
+        </div>
+      `,
+    });
+
+    return { success: true, messageId: info.messageId };
+  } catch (error) {
+    console.error('Nodemailer send workspace email error:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+}

@@ -1,5 +1,6 @@
 'use server';
 
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db';
 import { Company, CompanyType } from '../types';
 import { parseQueryWithAI, convertToDbFilters, ParsedQuery } from '../services/query-parser';
@@ -226,7 +227,7 @@ export async function searchCompaniesAction(filters: {
   rating?: number;
   verified?: boolean;
 }): Promise<Company[]> {
-  const whereClause: Parameters<typeof prisma.companies.findMany>[0]['where'] = {};
+  const whereClause: Prisma.companiesWhereInput = {};
 
   if (filters.query) {
     whereClause.OR = [
@@ -385,7 +386,7 @@ export async function searchCompaniesPaginatedAction(filters: {
   const skip = filters.skip || 0;
   const take = filters.take || 20;
 
-  const whereClause: Parameters<typeof prisma.companies.findMany>[0]['where'] = {};
+  const whereClause: Prisma.companiesWhereInput = {};
   let parsedQuery: ParsedQuery | undefined;
 
   // Track keywords for relevance scoring (outside query block scope)

@@ -2,26 +2,36 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { Search, Mic, X, Sparkles, Bot } from 'lucide-react';
+import { Search, Mic, X, Sparkles, Bot, MapPin } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { INDIAN_STATES } from '@/lib/constants';
 
 interface SearchBarProps {
   placeholder?: string;
   defaultValue?: string;
+  defaultRegion?: string;
   suggestions?: string[];
   variant?: 'default' | 'hero';
   colorTheme?: 'teal' | 'emerald';
+  showRegionFilter?: boolean;
   className?: string;
 }
 
 const animatedPlaceholders = {
   teal: [
-    'Find distributors for protein supplements in Maharashtra...',
-    'Search retailers looking for health products...',
-    'Discover e-commerce platforms for nutraceuticals...',
-    'Find wholesalers in Delhi NCR region...',
-    'Search pharmacy chains expanding their portfolio...',
+    'Find distributors looking to stock your products...',
+    'Search retailers seeking new health supplement brands...',
+    'Discover wholesalers wanting to expand their portfolio...',
+    'Find pharmacy chains looking for vitamin suppliers...',
+    'Search e-commerce platforms seeking nutraceutical partners...',
   ],
   emerald: [
     'Find GMP certified manufacturers in Gujarat...',
@@ -35,12 +45,15 @@ const animatedPlaceholders = {
 export function SearchBar({
   placeholder = 'Search for companies, products, or services...',
   defaultValue = '',
+  defaultRegion = '',
   suggestions = [],
   variant = 'default',
   colorTheme = 'teal',
+  showRegionFilter = false,
   className = '',
 }: SearchBarProps) {
   const [query, setQuery] = useState(defaultValue);
+  const [selectedRegion, setSelectedRegion] = useState(defaultRegion);
   const [isFocused, setIsFocused] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -97,14 +110,19 @@ export function SearchBar({
   }, [charIndex, isDeleting, placeholderIndex, isHero, isFocused, query, placeholders]);
 
   const handleSearch = () => {
-    // Navigate to search page, with or without query
+    // Navigate to search page with query and optional region filter
+    const params = new URLSearchParams();
     const trimmedQuery = query.trim();
+
     if (trimmedQuery) {
-      router.push(`/search?q=${encodeURIComponent(trimmedQuery)}`);
-    } else {
-      // Empty search shows all companies
-      router.push('/search');
+      params.set('q', trimmedQuery);
     }
+    if (selectedRegion && selectedRegion !== 'all') {
+      params.set('state', selectedRegion);
+    }
+
+    const queryString = params.toString();
+    router.push(`/search${queryString ? `?${queryString}` : ''}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -220,6 +238,26 @@ export function SearchBar({
         >
           <Mic className={`${isHero ? 'h-5 w-5' : 'h-4 w-4'}`} />
         </Button>
+
+        {/* Region Filter Dropdown */}
+        {showRegionFilter && (
+          <div className={`flex items-center mr-2 ${isHero ? 'border-l border-gray-200 dark:border-gray-700 pl-2' : ''}`}>
+            <MapPin className={`h-4 w-4 mr-1 ${isTeal ? 'text-teal-500 dark:text-teal-400' : 'text-emerald-500 dark:text-emerald-400'}`} />
+            <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+              <SelectTrigger className={`${isHero ? 'w-[140px] h-10' : 'w-[120px] h-8'} border-0 bg-transparent shadow-none focus:ring-0 focus:ring-offset-0 ${isTeal ? 'text-teal-700 dark:text-teal-300' : 'text-emerald-700 dark:text-emerald-300'} font-medium`}>
+                <SelectValue placeholder="All Regions" />
+              </SelectTrigger>
+              <SelectContent className="max-h-80">
+                <SelectItem value="all">All Regions</SelectItem>
+                {INDIAN_STATES.map((state) => (
+                  <SelectItem key={state} value={state}>
+                    {state}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <Button
           onClick={handleSearch}

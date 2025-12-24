@@ -201,3 +201,45 @@ export async function sendWelcomeEmail(
     return { success: false, error: 'Failed to send welcome email' };
   }
 }
+
+/**
+ * Send workspace email (custom email from user)
+ */
+export async function sendWorkspaceEmail(params: {
+  to: string;
+  subject: string;
+  body: string;
+  fromName?: string;
+}): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  try {
+    const { data, error } = await getResendClient().emails.send({
+      from: FROM_EMAIL,
+      to: params.to,
+      subject: params.subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <div style="white-space: pre-wrap; color: #1f2937; line-height: 1.6;">
+            ${params.body.replace(/\n/g, '<br/>')}
+          </div>
+
+          <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
+
+          <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+            Sent via <a href="https://nutraconnect.in" style="color: #0d9488;">NutraConnect</a>
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error('[Resend] Error sending workspace email:', error);
+      return { success: false, error: error.message };
+    }
+
+    console.log(`[Resend] Workspace email sent to ${params.to}`);
+    return { success: true, messageId: data?.id };
+  } catch (err) {
+    console.error('[Resend] Exception sending workspace email:', err);
+    return { success: false, error: 'Failed to send email' };
+  }
+}

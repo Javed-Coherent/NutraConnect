@@ -329,7 +329,7 @@ export function CompanyTabs({ company, isLoggedIn = false }: CompanyTabsProps) {
                       </div>
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-900 dark:text-white">Email</p>
-                        <a href={`mailto:${company.email}`} className="text-sm text-teal-600 dark:text-teal-400 hover:underline">{company.email}</a>
+                        <p className="text-sm text-orange-600 dark:text-orange-400">Available via Send Email button</p>
                       </div>
                     </div>
                   )}

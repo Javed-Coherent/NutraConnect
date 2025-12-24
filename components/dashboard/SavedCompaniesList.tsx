@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import {
-  Heart,
+  Bookmark,
   Star,
   MapPin,
   CheckCircle2,
@@ -39,6 +39,8 @@ import {
 } from '@/components/ui/select';
 import { removeSavedCompanyAction, type SavedCompanyWithDetails } from '@/lib/actions/companies';
 import { Company } from '@/lib/types';
+import { EmailComposer } from '@/components/workspace/email/EmailComposer';
+import { VoipDialerDialog } from '@/components/workspace/calls/VoipDialerDialog';
 
 interface SavedCompaniesListProps {
   initialData: SavedCompanyWithDetails[];
@@ -52,6 +54,27 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
   const [filterType, setFilterType] = useState('all');
   const [isPending, startTransition] = useTransition();
   const [removingId, setRemovingId] = useState<string | null>(null);
+  const [emailComposerOpen, setEmailComposerOpen] = useState(false);
+  const [voipDialerOpen, setVoipDialerOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+
+  const handleEmailClick = (company: Company, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (company.email) {
+      setSelectedCompany(company);
+      setEmailComposerOpen(true);
+    }
+  };
+
+  const handleCallClick = (company: Company, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (company.phone) {
+      setSelectedCompany(company);
+      setVoipDialerOpen(true);
+    }
+  };
 
   const handleRemove = async (savedId: string) => {
     setRemovingId(savedId);
@@ -108,7 +131,7 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-            <Heart className="h-6 w-6 text-red-500" />
+            <Bookmark className="h-6 w-6 text-teal-500" />
             Saved Companies
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
@@ -208,7 +231,7 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
               </>
             ) : (
               <>
-                <Heart className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <Bookmark className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                   No companies found
                 </h3>
@@ -353,15 +376,23 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
                       </Link>
                     </Button>
                     {company.phone && (
-                      <Button size="sm" variant="outline" className="border-green-200 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-emerald-200 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+                        onClick={(e) => handleCallClick(company, e)}
+                      >
                         <Phone className="h-4 w-4" />
                       </Button>
                     )}
                     {company.email && (
-                      <Button size="sm" variant="outline" className="border-orange-200 dark:border-orange-700 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30" asChild>
-                        <a href={`mailto:${company.email}`}>
-                          <Mail className="h-4 w-4" />
-                        </a>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="border-teal-200 dark:border-teal-700 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30"
+                        onClick={(e) => handleEmailClick(company, e)}
+                      >
+                        <Mail className="h-4 w-4" />
                       </Button>
                     )}
                   </div>
@@ -442,8 +473,23 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
                         </Link>
                       </Button>
                       {company.phone && (
-                        <Button size="sm" variant="outline" className="border-green-200 dark:border-green-700 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-emerald-200 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+                          onClick={(e) => handleCallClick(company, e)}
+                        >
                           <Phone className="h-4 w-4" />
+                        </Button>
+                      )}
+                      {company.email && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="border-teal-200 dark:border-teal-700 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30"
+                          onClick={(e) => handleEmailClick(company, e)}
+                        >
+                          <Mail className="h-4 w-4" />
                         </Button>
                       )}
                       <Button
@@ -467,6 +513,26 @@ export function SavedCompaniesList({ initialData }: SavedCompaniesListProps) {
           })}
         </div>
       )}
+
+      {/* Email Composer Modal */}
+      <EmailComposer
+        open={emailComposerOpen}
+        onOpenChange={setEmailComposerOpen}
+        prefill={selectedCompany ? {
+          toEmail: selectedCompany.email || undefined,
+          toName: selectedCompany.name,
+          companyId: parseInt(selectedCompany.id),
+        } : undefined}
+      />
+
+      {/* VoIP Dialer Modal */}
+      <VoipDialerDialog
+        open={voipDialerOpen}
+        onOpenChange={setVoipDialerOpen}
+        prefillNumber={selectedCompany?.phone || undefined}
+        prefillName={selectedCompany?.name}
+        companyId={selectedCompany ? parseInt(selectedCompany.id) : undefined}
+      />
     </div>
   );
 }

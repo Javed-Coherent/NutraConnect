@@ -69,12 +69,13 @@ export default async function ForSuppliersPage() {
             </p>
           </div>
 
-          {/* Search Bar */}
+          {/* Search Bar with Region Filter */}
           <div className="max-w-3xl mx-auto">
             <SearchBar
               variant="hero"
-              placeholder="e.g., distributors for protein supplements in Maharashtra..."
+              placeholder="e.g., distributors for protein supplements..."
               suggestions={SEARCH_SUGGESTIONS.suppliers}
+              showRegionFilter={true}
             />
           </div>
 

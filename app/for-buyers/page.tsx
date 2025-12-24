@@ -5,8 +5,6 @@ import {
   Star,
   CheckCircle2,
   Eye,
-  Zap,
-  Sparkles,
 } from 'lucide-react';
 import { SearchBar } from '@/components/search/SearchBar';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,8 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SEARCH_SUGGESTIONS } from '@/lib/constants';
 import { getTrendingCompaniesAction } from '@/lib/actions/companies';
-import { fetchLatestNewsAction } from '@/lib/actions/news';
-import { getNewsSummaryUrl } from '@/lib/utils/news';
+import { BuyerInsightsSection } from '@/components/insights/BuyerInsightsSection';
 
 export const metadata: Metadata = {
   title: 'Find Suppliers - For Buyers',
@@ -52,7 +49,6 @@ export default async function ForBuyersPage() {
     ['manufacturer', 'raw_material', 'formulator'],
     2
   );
-  const { news: latestNews, isLive } = await fetchLatestNewsAction(undefined, 2);
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -86,70 +82,10 @@ export default async function ForBuyersPage() {
         </div>
       </section>
 
-      {/* Latest News Section */}
+      {/* Buyer Insights Section */}
       <section className="py-12 bg-emerald-50/50 dark:bg-gray-800/50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Industry News & Updates</h2>
-              {isLive && (
-                <Badge className="bg-emerald-500 text-white hover:bg-emerald-600 animate-pulse">
-                  <Zap className="h-3 w-3 mr-1" />
-                  Live
-                </Badge>
-              )}
-            </div>
-            <Button className="border-2 border-emerald-500 bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 hover:border-emerald-600 shadow-sm" asChild>
-              <Link href="/search">
-                <Eye className="h-4 w-4 mr-2" />
-                View All
-              </Link>
-            </Button>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {latestNews.map((news) => (
-              <Card key={news.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 border-2 border-emerald-100 hover:border-emerald-300 bg-gradient-to-br from-white to-emerald-50/30 dark:from-gray-800 dark:to-gray-800 dark:border-emerald-800 dark:hover:border-emerald-600 hover:-translate-y-1">
-                <CardContent className="p-6">
-                  <Badge className="mb-3 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900 dark:text-emerald-300">
-                    {news.category === 'company' ? 'Company News' :
-                     news.category === 'industry' ? 'Industry' : 'Regulatory'}
-                  </Badge>
-                  <Link
-                    href={getNewsSummaryUrl(news)}
-                    className="block"
-                  >
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-emerald-700 dark:hover:text-emerald-400 transition-colors cursor-pointer">
-                      {news.title}
-                    </h3>
-                  </Link>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                    {news.summary}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                      {news.source} · {new Date(news.publishedAt).toLocaleDateString()}
-                    </span>
-                    <Button size="sm" className="border-2 border-emerald-500 bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 hover:border-emerald-600 shadow-sm" asChild>
-                      <Link href={getNewsSummaryUrl(news)}>
-                        <Sparkles className="h-3 w-3 mr-1" />
-                        AI Summary
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-6">
-            <Button className="border-2 border-emerald-500 bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-200 hover:border-emerald-600 shadow-sm" asChild>
-              <Link href="/search">
-                <Eye className="h-4 w-4 mr-2" />
-                View All Insights
-              </Link>
-            </Button>
-          </div>
+          <BuyerInsightsSection limit={4} />
         </div>
       </section>
 

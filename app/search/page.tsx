@@ -9,10 +9,11 @@ import { MobileFilterContent } from '@/components/search/FilterSidebar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import {
   Select,
   SelectContent,
@@ -256,6 +257,8 @@ function SearchContent() {
     filters.employeeCounts.length +
     filters.turnovers.length;
 
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Search Header */}
@@ -265,41 +268,59 @@ function SearchContent() {
             defaultValue={initialQuery}
             suggestions={allSuggestions}
             placeholder="Search companies, products, or services..."
+            showRegionFilter={true}
           />
         </div>
       </div>
 
-      {/* Results Area - Full Width */}
+      {/* Main Content with Sidebar */}
       <div className="container mx-auto px-4 py-6">
-        {/* Results Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {!hasSearchCriteria
-                ? 'Company Search'
-                : initialQuery
-                ? `Results for "${initialQuery}"`
-                : 'Search Results'}
-            </h1>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {!hasSearchCriteria ? (
-                <span>Search for companies, products, or services</span>
-              ) : isLoading ? (
-                <span>Searching...</span>
-              ) : (
-                <>
-                  <span className="font-medium text-teal-600 dark:text-teal-400">{results.length}</span>
-                  {total > 0 && <span> of {total}</span>} companies found
-                </>
-              )}
-            </p>
+        <div className="flex gap-6">
+          {/* Left Sidebar - Filters (Desktop) */}
+          <div className="hidden lg:block w-72 flex-shrink-0">
+            <div className="sticky top-20 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm max-h-[calc(100vh-6rem)] overflow-y-auto">
+              <MobileFilterContent
+                filters={filters}
+                onFiltersChange={setFilters}
+                onClear={clearFilters}
+                resultCount={results.length}
+              />
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Filter Dropdown Button */}
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className="gap-2">
+          {/* Right Content - Results */}
+          <div className="flex-1 min-w-0">
+            {/* Results Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {!hasSearchCriteria
+                    ? 'Company Search'
+                    : initialQuery
+                    ? `Results for "${initialQuery}"`
+                    : 'Search Results'}
+                </h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {!hasSearchCriteria ? (
+                    <span>Search for companies, products, or services</span>
+                  ) : isLoading ? (
+                    <span>Searching...</span>
+                  ) : (
+                    <>
+                      <span className="font-medium text-teal-600 dark:text-teal-400">{results.length}</span>
+                      {total > 0 && <span> of {total}</span>} companies found
+                    </>
+                  )}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Mobile Filter Button */}
+                <Button
+                  variant="outline"
+                  className="lg:hidden gap-2"
+                  onClick={() => setShowMobileFilters(true)}
+                >
                   <Filter className="h-4 w-4" />
                   Filters
                   {activeFilterCount > 0 && (
@@ -308,38 +329,27 @@ function SearchContent() {
                     </Badge>
                   )}
                 </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80 p-0 max-h-[80vh] overflow-hidden" align="end">
-                <MobileFilterContent
-                  filters={filters}
-                  onFiltersChange={setFilters}
-                  onClear={clearFilters}
-                  resultCount={results.length}
-                />
-              </PopoverContent>
-            </Popover>
 
-            {/* Sort */}
-            <Select
-              value={sortBy}
-              onValueChange={(value) =>
-                setSortBy(value as typeof sortBy)
-              }
-            >
-              <SelectTrigger className="w-[140px]">
-                <ArrowUpDown className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="relevance">Relevance</SelectItem>
-                <SelectItem value="rating">Rating</SelectItem>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="recent">Recently Updated</SelectItem>
-              </SelectContent>
-            </Select>
-
-          </div>
-        </div>
+                {/* Sort */}
+                <Select
+                  value={sortBy}
+                  onValueChange={(value) =>
+                    setSortBy(value as typeof sortBy)
+                  }
+                >
+                  <SelectTrigger className="w-[140px]">
+                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="relevance">Relevance</SelectItem>
+                    <SelectItem value="rating">Rating</SelectItem>
+                    <SelectItem value="name">Name</SelectItem>
+                    <SelectItem value="recent">Recently Updated</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
         {/* Active Filters Display */}
         {activeFilterCount > 0 && (
@@ -494,7 +504,34 @@ function SearchContent() {
           </>
         )}
 
+          </div>
+        </div>
       </div>
+
+      {/* Mobile Filter Sheet */}
+      <Sheet open={showMobileFilters} onOpenChange={setShowMobileFilters}>
+        <SheetContent side="left" className="w-[320px] p-0 overflow-auto">
+          <SheetHeader className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+            <SheetTitle className="text-lg font-semibold text-gray-900 dark:text-white">
+              Filter Companies
+            </SheetTitle>
+          </SheetHeader>
+          <MobileFilterContent
+            filters={filters}
+            onFiltersChange={setFilters}
+            onClear={clearFilters}
+            resultCount={results.length}
+          />
+          <div className="sticky bottom-0 p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+            <Button
+              onClick={() => setShowMobileFilters(false)}
+              className="w-full bg-teal-600 hover:bg-teal-700 text-white"
+            >
+              Apply Filters ({results.length} results)
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

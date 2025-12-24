@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../db';
 import { Company, CompanyType } from '../types';
 import type { companies as DbCompany } from '@prisma/client';
@@ -12,15 +13,15 @@ function mapEntityToType(entity: string | null): CompanyType {
   if (entityLower.includes('manufacturer') || entityLower.includes('manufacturing')) return 'manufacturer';
   if (entityLower.includes('distributor') || entityLower.includes('distribution')) return 'distributor';
   if (entityLower.includes('retailer') || entityLower.includes('retail')) return 'retailer';
-  if (entityLower.includes('exporter') || entityLower.includes('export')) return 'exporter';
+  if (entityLower.includes('exporter') || entityLower.includes('export')) return 'distributor'; // Map exporter to distributor
   if (entityLower.includes('wholesaler') || entityLower.includes('wholesale')) return 'wholesaler';
   if (entityLower.includes('raw material') || entityLower.includes('supplier') || entityLower.includes('ingredient')) return 'raw_material';
   if (entityLower.includes('formulator') || entityLower.includes('formulation')) return 'formulator';
   if (entityLower.includes('packager') || entityLower.includes('packaging')) return 'packager';
   if (entityLower.includes('cro') || entityLower.includes('contract research') || entityLower.includes('testing') || entityLower.includes('lab')) return 'cro';
-  if (entityLower.includes('importer') || entityLower.includes('import')) return 'importer';
-  if (entityLower.includes('ecommerce') || entityLower.includes('e-commerce') || entityLower.includes('online')) return 'ecommerce';
-  if (entityLower.includes('pharmacy') || entityLower.includes('pharma chain')) return 'pharmacy_chain';
+  if (entityLower.includes('importer') || entityLower.includes('import')) return 'distributor'; // Map importer to distributor
+  if (entityLower.includes('ecommerce') || entityLower.includes('e-commerce') || entityLower.includes('online')) return 'retailer'; // Map e-commerce to retailer
+  if (entityLower.includes('pharmacy') || entityLower.includes('pharma chain')) return 'retailer'; // Map pharmacy to retailer
 
   return 'manufacturer'; // default
 }
@@ -260,7 +261,7 @@ export async function searchCompanies(filters: {
   verified?: boolean;
 }): Promise<Company[]> {
   // Build Prisma where clause
-  const whereClause: Parameters<typeof prisma.companies.findMany>[0]['where'] = {};
+  const whereClause: Prisma.companiesWhereInput = {};
 
   if (filters.query) {
     whereClause.OR = [

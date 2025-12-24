@@ -7,21 +7,18 @@ import { cn } from '@/lib/utils';
 
 const footerLinks = {
   platform: [
-    { label: 'For Suppliers', href: '/for-suppliers' },
-    { label: 'For Buyers', href: '/for-buyers' },
+    { label: 'Search Companies', href: '/search' },
+    { label: 'Industry Expert', href: '/knowledge' },
     { label: 'Pricing', href: '/pricing' },
-    { label: 'Compare Companies', href: '/compare' },
   ],
   resources: [
     { label: 'Industry News', href: '/news' },
     { label: 'Market Insights', href: '/insights' },
-    { label: 'Help Center', href: '/help' },
-    { label: 'API Documentation', href: '/docs/api' },
+    { label: 'Help Center', href: '/about' },
   ],
   company: [
-    { label: 'About Us', href: '/about' },
+    { label: 'About & Contact', href: '/about' },
     { label: 'Careers', href: '/careers' },
-    { label: 'Contact', href: '/contact' },
     { label: 'Blog', href: '/blog' },
   ],
   legal: [
@@ -40,6 +37,12 @@ const socialLinks = [
 export function Footer() {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
+  const isWorkspace = pathname?.startsWith('/workspace');
+
+  // Hide footer on workspace pages (workspace has its own layout)
+  if (isWorkspace) {
+    return null;
+  }
 
   return (
     <footer className="bg-gray-900 text-gray-300">

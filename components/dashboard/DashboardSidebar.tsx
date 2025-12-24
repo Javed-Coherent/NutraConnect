@@ -6,8 +6,6 @@ import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import {
   User,
-  Heart,
-  History,
   CreditCard,
   Settings,
   ChevronLeft,
@@ -25,7 +23,6 @@ interface UserData {
   name: string | null;
   plan: string;
   role: string;
-  savedCompaniesCount?: number;
 }
 
 interface DashboardSidebarProps {
@@ -38,17 +35,6 @@ const sidebarItems = [
     title: 'Profile',
     href: '/dashboard',
     icon: User,
-  },
-  {
-    title: 'Saved Companies',
-    href: '/dashboard/saved',
-    icon: Heart,
-    badgeKey: 'savedCompaniesCount' as const,
-  },
-  {
-    title: 'Search History',
-    href: '/dashboard/history',
-    icon: History,
   },
   {
     title: 'Subscription',
@@ -82,11 +68,8 @@ export function DashboardSidebar({ user, children }: DashboardSidebarProps) {
   const displayName = user.name || 'User';
   const memberLabel = user.plan === 'free' ? 'Free Member' : user.plan === 'pro' ? 'Pro Member' : 'Enterprise Member';
 
-  const getBadgeValue = (badgeKey?: 'savedCompaniesCount' | 'plan') => {
+  const getBadgeValue = (badgeKey?: 'plan') => {
     if (!badgeKey) return null;
-    if (badgeKey === 'savedCompaniesCount') {
-      return user.savedCompaniesCount?.toString() || '0';
-    }
     if (badgeKey === 'plan') {
       return user.plan.charAt(0).toUpperCase() + user.plan.slice(1);
     }

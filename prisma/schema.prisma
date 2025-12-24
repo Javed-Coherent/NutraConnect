@@ -40,6 +40,12 @@ model User {
   profileViews    ProfileView[]
   contactReveals  ContactReveal[]
   conversations   Conversation[]
+
+  // Workspace Hub relations
+  workspaceEmails    WorkspaceEmail[]
+  workspaceCalls     WorkspaceCall[]
+  emailTemplates     EmailTemplate[]
+  voipSettings       VoipSettings?
 }
 
 model Account {
@@ -243,4 +249,119 @@ model Message {
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId])
+}
+
+// ============================================
+// Workspace Hub Models
+// ============================================
+
+// Email templates for quick compose
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  body      String   @db.Text
+  type      String   // "inquiry" | "partnership" | "quote_request" | "custom"
+  isSystem  Boolean  @default(false) // System templates vs user-created
+  userId    String?  // null for system templates
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emails WorkspaceEmail[]
+
+  @@index([userId])
+  @@index([type])
+}
+
+// Sent emails tracking
+model WorkspaceEmail {
+  id         String    @id @default(cuid())
+  userId     String
+  companyId  Int?      // Target company (nullable for external emails)
+  templateId String?   // Template used (if any)
+
+  // Email content
+  toEmail String
+  toName  String?
+  subject String
+  body    String @db.Text
+
+  // Status tracking
+  status        String    @default("sent") // "draft" | "sent" | "delivered" | "failed"
+  sentAt        DateTime?
+  failureReason String?
+
+  // Metadata
+  messageId String? // Email provider message ID for tracking
+  provider  String? // "resend" | "nodemailer"
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  template EmailTemplate? @relation(fields: [templateId], references: [id])
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([status])
+  @@index([sentAt])
+}
+
+// VoIP call logs
+model WorkspaceCall {
+  id        String @id @default(cuid())
+  userId    String
+  companyId Int?   // Target company (nullable for external calls)
+
+  // Call details
+  toNumber   String
+  toName     String?
+  fromNumber String // Twilio number used
+
+  // Status tracking
+  status    String @default("initiated") // "initiated" | "ringing" | "in-progress" | "completed" | "failed" | "no-answer" | "busy"
+  direction String @default("outbound")  // "outbound" | "inbound"
+
+  // Duration & timing
+  startedAt  DateTime?
+  answeredAt DateTime?
+  endedAt    DateTime?
+  duration   Int?      // Duration in seconds
+
+  // Twilio metadata
+  twilioCallSid String? @unique
+  recordingUrl  String? // If call recording enabled
+
+  // Notes
+  notes String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([companyId])
+  @@index([status])
+  @@index([startedAt])
+  @@index([twilioCallSid])
+}
+
+// User's VoIP settings
+model VoipSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // Twilio phone number assigned to user
+  twilioPhoneNumber String?
+
+  // Settings
+  callRecording    Boolean @default(false)
+  voicemailEnabled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

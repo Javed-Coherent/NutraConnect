@@ -222,7 +222,7 @@ export async function getProfileViewsAction(limit: number = 20): Promise<Profile
     })
   );
 
-  return viewsWithCompanies.filter((v): v is ProfileViewItem => v !== null);
+  return viewsWithCompanies.filter((v): v is NonNullable<typeof v> => v !== null) as ProfileViewItem[];
 }
 
 export async function addProfileViewAction(

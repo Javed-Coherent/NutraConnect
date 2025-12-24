@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Share2, Copy, Check, Mail, MessageCircle } from 'lucide-react';
+import { Share2, Copy, Check, Mail, MessageCircle, LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,6 +12,14 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Company } from '@/lib/types';
+
+// Social link type
+interface SocialLink {
+  name: string;
+  icon: LucideIcon | React.FC;
+  url: string;
+  className: string;
+}
 
 interface ShareCompanyDialogProps {
   company: Company;
@@ -42,7 +50,7 @@ export function ShareCompanyDialog({ company }: ShareCompanyDialogProps) {
   const shareUrl = getShareUrl();
   const shareText = `Check out ${company.name} on NutraConnect`;
 
-  const socialLinks = [
+  const socialLinks: SocialLink[] = [
     {
       name: 'WhatsApp',
       icon: MessageCircle,
@@ -145,8 +153,10 @@ export function ShareCompanyDialog({ company }: ShareCompanyDialogProps) {
                     onClick={() => setOpen(false)}
                   >
                     <Button className={`w-full ${social.className}`}>
-                      {typeof IconComponent === 'function' ? <IconComponent /> : <IconComponent className="h-4 w-4 mr-2" />}
-                      <span className="ml-2">{social.name}</span>
+                      <span className="h-4 w-4 mr-2 flex items-center justify-center">
+                        <IconComponent />
+                      </span>
+                      <span>{social.name}</span>
                     </Button>
                   </a>
                 );

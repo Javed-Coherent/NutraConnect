@@ -115,11 +115,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub as string
-        session.user.role = token.role
-        session.user.plan = token.plan
-        session.user.emailVerified = token.emailVerified
+        session.user.role = token.role as string | undefined
+        session.user.plan = token.plan as string | undefined
+        session.user.emailVerified = (token.emailVerified as Date | null) ?? null
       }
       return session
     }
-  }
+  },
+  trustHost: true,
 })

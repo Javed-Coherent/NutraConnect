@@ -212,11 +212,11 @@ export const SUPPLIER_CATEGORIES = [
 
 export const SEARCH_SUGGESTIONS = {
   suppliers: [
-    'distributors for protein supplements in Maharashtra',
-    'retailers who sell ayurvedic products near Bangalore',
-    'exporters with FDA certification',
-    'pharmacy chains looking for new vitamin brands',
-    'e-commerce platforms for health supplements',
+    'distributors looking to stock protein supplements',
+    'retailers seeking new ayurvedic product brands',
+    'wholesalers wanting to expand health supplement range',
+    'pharmacy chains looking for vitamin suppliers',
+    'e-commerce platforms seeking nutraceutical partners',
   ],
   buyers: [
     'protein powder manufacturers in Gujarat',

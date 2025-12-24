@@ -103,3 +103,32 @@ export function getEmailProviderStatus(): {
   }
   return { provider: 'console', configured: false };
 }
+
+/**
+ * Send workspace email (custom email from user)
+ */
+export async function sendWorkspaceEmail(params: {
+  to: string;
+  subject: string;
+  body: string;
+  fromName?: string;
+}): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  // Priority 1: Resend (recommended for production)
+  if (isResendConfigured) {
+    console.log(`[Email] Using Resend to send workspace email to ${params.to}`);
+    return resendProvider.sendWorkspaceEmail(params);
+  }
+
+  // Priority 2: Nodemailer (Gmail SMTP)
+  if (isSmtpConfigured) {
+    console.log(`[Email] Using Nodemailer to send workspace email to ${params.to}`);
+    return nodemailerProvider.sendWorkspaceEmail(params);
+  }
+
+  // Priority 3: DEV MODE - log to console
+  console.log(`[DEV MODE] Workspace email to ${params.to}:`, {
+    subject: params.subject,
+    body: params.body.substring(0, 100) + '...',
+  });
+  return { success: true, messageId: `dev-${Date.now()}` };
+}

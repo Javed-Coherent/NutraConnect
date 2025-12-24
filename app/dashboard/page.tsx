@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {
-  Heart,
+  Bookmark,
   Search,
   Eye,
   Phone,
@@ -198,8 +198,8 @@ export default async function ProfilePage() {
         <Card className="border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-red-50 dark:bg-red-900/30">
-                <Heart className="h-5 w-5 text-red-500 dark:text-red-400" />
+              <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-900/30">
+                <Bookmark className="h-5 w-5 text-teal-500 dark:text-teal-400" />
               </div>
               <div>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Saved</p>
@@ -328,15 +328,15 @@ export default async function ProfilePage() {
                 )}
                 {savedCompaniesCount > 0 && (
                   <div className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400">
-                      <Heart className="h-4 w-4" />
+                    <div className="p-2 rounded-lg bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400">
+                      <Bookmark className="h-4 w-4" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                         {savedCompaniesCount} compan{savedCompaniesCount !== 1 ? 'ies' : 'y'} saved
                       </p>
                     </div>
-                    <Link href="/dashboard/saved" className="text-xs text-teal-600 dark:text-teal-400 hover:underline">
+                    <Link href="/workspace/saved" className="text-xs text-teal-600 dark:text-teal-400 hover:underline">
                       View all
                     </Link>
                   </div>
@@ -422,11 +422,11 @@ export default async function ProfilePage() {
       <Card className="border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-            <Heart className="h-5 w-5 text-red-500" />
+            <Bookmark className="h-5 w-5 text-teal-500" />
             Saved Companies
           </CardTitle>
           {savedCompaniesCount > 0 && (
-            <Link href="/dashboard/saved" className="text-sm text-teal-600 dark:text-teal-400 hover:underline flex items-center">
+            <Link href="/workspace/saved" className="text-sm text-teal-600 dark:text-teal-400 hover:underline flex items-center">
               View all {savedCompaniesCount}
               <ArrowRight className="h-4 w-4 ml-1" />
             </Link>
@@ -436,7 +436,7 @@ export default async function ProfilePage() {
           {savedCompaniesData.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 text-center">
               <div className="p-4 rounded-full bg-gray-100 dark:bg-gray-700 mb-4">
-                <Heart className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+                <Bookmark className="h-8 w-8 text-gray-400 dark:text-gray-500" />
               </div>
               <h3 className="font-medium text-gray-900 dark:text-white mb-1">No saved companies</h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">

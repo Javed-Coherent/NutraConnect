@@ -9,19 +9,21 @@ import {
   MapPin,
   Phone,
   Mail,
-  Heart,
+  Bookmark,
   Calendar,
   Shield,
   Award,
   ChevronRight,
   Loader2,
+  Send,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Company } from '@/lib/types';
 import { COMPANY_TYPES, VERIFICATION_TYPES } from '@/lib/constants';
 import { toggleSaveCompanyAction, isCompanySavedAction } from '@/lib/actions/companies';
-import { ShareCompanyDialog } from './ShareCompanyDialog';
+import { EmailComposer } from '@/components/workspace/email/EmailComposer';
+import { VoipDialerDialog } from '@/components/workspace/calls/VoipDialerDialog';
 
 interface CompanyHeaderProps {
   company: Company;
@@ -33,6 +35,8 @@ export function CompanyHeader({ company, isLoggedIn = false }: CompanyHeaderProp
   const router = useRouter();
   const [isSaved, setIsSaved] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
+  const [emailComposerOpen, setEmailComposerOpen] = useState(false);
+  const [voipDialerOpen, setVoipDialerOpen] = useState(false);
 
   // Check if company is saved on mount (server action handles auth check)
   useEffect(() => {
@@ -121,26 +125,6 @@ export function CompanyHeader({ company, isLoggedIn = false }: CompanyHeaderProp
               )}
             </div>
 
-            {/* Rating */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-gray-800 rounded-full shadow-sm border border-gray-100 dark:border-gray-700">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 ${
-                        i < Math.floor(company.rating || 0)
-                          ? 'text-yellow-400 fill-yellow-400'
-                          : 'text-gray-200 dark:text-gray-600'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="font-bold text-gray-900 dark:text-white ml-1">{company.rating?.toFixed(1)}</span>
-              </div>
-              <span className="text-gray-500 dark:text-gray-400">({company.reviewsCount} reviews)</span>
-            </div>
-
             {/* Type & Location */}
             <div className="flex flex-wrap items-center gap-3 text-gray-600 dark:text-gray-400 mb-4">
               <Badge variant="secondary" className="text-sm bg-teal-50 dark:bg-teal-900 text-teal-700 dark:text-teal-300 border border-teal-200 dark:border-teal-700">
@@ -185,18 +169,24 @@ export function CompanyHeader({ company, isLoggedIn = false }: CompanyHeaderProp
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-3">
-              {company.phone && (
-                <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg">
-                  <Phone className="h-4 w-4 mr-2" />
-                  {company.phone}
+              {company.email && (
+                <Button
+                  variant="outline"
+                  className="border-teal-300 dark:border-teal-700 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:border-teal-400"
+                  onClick={() => setEmailComposerOpen(true)}
+                >
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Email
                 </Button>
               )}
-              {company.email && (
-                <Button variant="outline" className="border-orange-300 dark:border-orange-700 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/30 hover:border-orange-400" asChild>
-                  <a href={`mailto:${company.email}`}>
-                    <Mail className="h-4 w-4 mr-2" />
-                    Send Email
-                  </a>
+              {company.phone && (
+                <Button
+                  variant="outline"
+                  className="border-emerald-300 dark:border-emerald-700 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:border-emerald-400"
+                  onClick={() => setVoipDialerOpen(true)}
+                >
+                  <Phone className="h-4 w-4 mr-2" />
+                  Call
                 </Button>
               )}
               <Button
@@ -205,23 +195,42 @@ export function CompanyHeader({ company, isLoggedIn = false }: CompanyHeaderProp
                 disabled={saveLoading}
                 className={
                   isSaved
-                    ? "bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 border-red-300 dark:border-red-700"
-                    : "dark:border-gray-600 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 dark:hover:text-red-400 hover:border-red-300 dark:hover:border-red-700"
+                    ? "bg-teal-50 dark:bg-teal-900/30 text-teal-500 dark:text-teal-400 border-teal-300 dark:border-teal-700"
+                    : "dark:border-gray-600 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-500 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-700"
                 }
               >
                 {saveLoading ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 ) : (
-                  <Heart className={`h-4 w-4 mr-2 ${isSaved ? 'fill-current' : ''}`} />
+                  <Bookmark className={`h-4 w-4 mr-2 ${isSaved ? 'fill-current' : ''}`} />
                 )}
                 {saveLoading ? 'Saving...' : isSaved ? 'Saved' : 'Save'}
               </Button>
-              <ShareCompanyDialog company={company} />
             </div>
 
           </div>
         </div>
       </div>
+
+      {/* Email Composer Modal */}
+      <EmailComposer
+        open={emailComposerOpen}
+        onOpenChange={setEmailComposerOpen}
+        prefill={{
+          toEmail: company.email || undefined,
+          toName: company.name,
+          companyId: parseInt(company.id),
+        }}
+      />
+
+      {/* VoIP Dialer Modal */}
+      <VoipDialerDialog
+        open={voipDialerOpen}
+        onOpenChange={setVoipDialerOpen}
+        prefillNumber={company.phone || undefined}
+        prefillName={company.name}
+        companyId={parseInt(company.id)}
+      />
     </div>
   );
 }

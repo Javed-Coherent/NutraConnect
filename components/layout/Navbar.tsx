@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
-import { Menu, Heart, User, Settings, LogOut } from 'lucide-react';
+import { Menu, Bookmark, User, Settings, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
@@ -38,12 +38,11 @@ export function Navbar({ user }: NavbarProps) {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/for-suppliers', label: 'For Suppliers' },
-    { href: '/for-buyers', label: 'For Buyers' },
     { href: '/knowledge', label: 'Industry Expert' },
+    { href: '/insights', label: 'Insights' },
+    { href: '/workspace', label: 'Workspace' },
     { href: '/pricing', label: 'Pricing' },
     { href: '/about', label: 'About Us' },
-    { href: '/contact', label: 'Contact Us' },
   ];
 
   return (
@@ -155,7 +154,7 @@ export function Navbar({ user }: NavbarProps) {
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-3 text-lg font-medium text-foreground hover:text-primary transition-colors"
                     >
-                      <Heart className="h-5 w-5" />
+                      <Bookmark className="h-5 w-5" />
                       Saved
                     </Link>
                     <Link

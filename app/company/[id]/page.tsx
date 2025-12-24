@@ -1,9 +1,8 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CompanyHeader } from '@/components/company/CompanyHeader';
-import { CompanyTabs } from '@/components/company/CompanyTabs';
-import { SimilarCompanies } from '@/components/company/SimilarCompanies';
-import { getCompanyById, getSimilarCompanies } from '@/lib/data/companies';
+import { CompanyContent } from '@/components/company/CompanyContent';
+import { getCompanyById } from '@/lib/data/companies';
 import { COMPANY_TYPES } from '@/lib/constants';
 import { addProfileViewAction } from '@/lib/actions/history';
 
@@ -50,8 +49,6 @@ export default async function CompanyPage({ params }: PageProps) {
     addProfileViewAction(companyId).catch(console.error);
   }
 
-  const similarCompanies = await getSimilarCompanies(company, 4);
-
   // Generate JSON-LD structured data
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -88,9 +85,7 @@ export default async function CompanyPage({ params }: PageProps) {
 
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <CompanyHeader company={company} isLoggedIn={false} />
-        <CompanyTabs company={company} isLoggedIn={false} />
-
-        <SimilarCompanies companies={similarCompanies} currentCompanyType={company.type} />
+        <CompanyContent company={company} isLoggedIn={false} />
       </div>
     </>
   );

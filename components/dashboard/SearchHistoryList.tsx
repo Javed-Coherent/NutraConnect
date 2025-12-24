@@ -422,13 +422,13 @@ export function SearchHistoryList({
                               </div>
                               {contact.company.email && (
                                 <div className="flex items-center gap-4 mt-3">
-                                  <a
-                                    href={`mailto:${contact.company.email}`}
+                                  <Link
+                                    href={`/company/${contact.companyId}`}
                                     className="flex items-center gap-2 px-3 py-1.5 bg-orange-50 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-lg text-sm font-medium hover:bg-orange-100 dark:hover:bg-orange-900/50 transition-colors"
                                   >
                                     <Mail className="h-4 w-4" />
-                                    {contact.company.email}
-                                  </a>
+                                    Send Email
+                                  </Link>
                                 </div>
                               )}
                             </div>
