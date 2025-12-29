@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import {
-  Bookmark,
   Star,
   MapPin,
   CheckCircle2,
@@ -78,8 +77,8 @@ export function SavedCompaniesPreview({ companies }: SavedCompaniesPreviewProps)
       <Card className="border border-gray-200 dark:border-gray-700 dark:bg-gray-800">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
-            <Bookmark className="h-5 w-5 text-teal-500" />
-            Saved Companies
+            <Building2 className="h-5 w-5 text-teal-500" />
+            Added Companies
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -111,8 +110,8 @@ export function SavedCompaniesPreview({ companies }: SavedCompaniesPreviewProps)
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Bookmark className="h-5 w-5 text-teal-500" />
-              Saved Companies
+              <Building2 className="h-5 w-5 text-teal-500" />
+              Added Companies
               <Badge variant="secondary" className="ml-2 bg-teal-100 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300">
                 {companies.length}
               </Badge>
@@ -219,7 +218,7 @@ export function SavedCompaniesPreview({ companies }: SavedCompaniesPreviewProps)
             <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 text-center">
               <Button variant="ghost" className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300" asChild>
                 <Link href="/workspace/saved">
-                  View all {companies.length} saved companies
+                  View all {companies.length} added companies
                   <ArrowRight className="h-4 w-4 ml-1" />
                 </Link>
               </Button>

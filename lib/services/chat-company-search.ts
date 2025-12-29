@@ -30,7 +30,8 @@ const COMPANY_INTENT_KEYWORDS = [
 const BUSINESS_CONTEXT_KEYWORDS = [
   // Business expansion
   'starting production', 'start producing', 'want to produce', 'thinking of making',
-  'expand into', 'expanding', 'add to our', 'new product line', 'launch',
+  'expand into', 'expanding', 'expand my', 'expand our', 'grow my', 'grow our',
+  'add to our', 'new product line', 'launch', 'scale up', 'scaling',
   'transition', 'transitioning', 'moving into', 'entering',
 
   // Sourcing needs
@@ -41,9 +42,10 @@ const BUSINESS_CONTEXT_KEYWORDS = [
   'outsource', 'outsourcing', 'contract manufacturing', 'private label',
   'white label', 'partner', 'partnership', 'collaboration',
 
-  // Business roles
-  'my company', 'our company', 'we are', 'i am a', 'our business',
-  'as a cdmo', 'as a manufacturer', 'we manufacture', 'we produce'
+  // Business roles - when user identifies themselves
+  'my company', 'our company', 'we are', 'i am a', 'i am an', 'our business',
+  'as a cdmo', 'as a manufacturer', 'we manufacture', 'we produce',
+  'i manufacture', 'i produce', 'i am manufacturer', 'i am supplier'
 ];
 
 // Product categories that should trigger company suggestions
@@ -177,6 +179,15 @@ function inferEntityTypeFromIntent(message: string): string[] | null {
     /looking\s+for\s+(packag|bottling)/i,
   ];
 
+  // Business expansion intent - when user identifies as a business type and wants to grow
+  // "I am a manufacturer and want to expand" -> they need partners: CDMOs, distributors, suppliers
+  const businessExpansionPatterns = [
+    /i\s+am\s+(a\s+|an\s+)?(manufacturer|cdmo|supplier|distributor).*(expand|grow|scale)/i,
+    /(expand|grow|scale).*(my|our)\s+(business|company|production)/i,
+    /want\s+to\s+(expand|grow|scale)/i,
+    /(manufacturer|supplier|producer).*(expand|grow|scale|approach)/i,
+  ];
+
   // Check patterns in order of specificity
   if (sourcePatterns.some(p => p.test(messageLower))) {
     console.log('[EntityInference] Detected: sourcing raw materials');
@@ -206,6 +217,13 @@ function inferEntityTypeFromIntent(message: string): string[] | null {
   if (packagePatterns.some(p => p.test(messageLower))) {
     console.log('[EntityInference] Detected: packaging intent');
     return ['packager', 'packaging'];
+  }
+
+  // Business expansion - suggest various partners
+  if (businessExpansionPatterns.some(p => p.test(messageLower))) {
+    console.log('[EntityInference] Detected: business expansion intent');
+    // Return a mix of partner types that help businesses expand
+    return ['cdmo', 'formulator', 'distributor', 'raw material', 'supplier'];
   }
 
   console.log('[EntityInference] No specific intent detected');
@@ -567,7 +585,19 @@ IMPORTANT: DO NOT make up any company names. Say "I couldn't find specific compa
   // Determine context based on entity types used
   let intentContext = '';
   if (entityTypesUsed && entityTypesUsed.length > 0) {
-    if (entityTypesUsed.includes('raw material') || entityTypesUsed.includes('supplier')) {
+    // Check if this is a business expansion query (multiple partner types)
+    const isExpansionQuery = entityTypesUsed.length >= 3 &&
+      (entityTypesUsed.includes('cdmo') || entityTypesUsed.includes('distributor'));
+
+    if (isExpansionQuery) {
+      intentContext = `\nBUSINESS EXPANSION QUERY DETECTED!
+The user is a business owner looking to expand. These companies are POTENTIAL PARTNERS to help them grow:
+- CDMOs/Formulators: For scaling production or contract manufacturing
+- Distributors: For expanding sales channels
+- Suppliers: For sourcing materials for new products
+
+IMPORTANT: You MUST recommend at least 2-3 of these companies in your response. Present them as valuable industry connections that could help with their expansion.`;
+    } else if (entityTypesUsed.includes('raw material') || entityTypesUsed.includes('supplier')) {
       intentContext = `\nThese are RAW MATERIAL SUPPLIERS and INGREDIENT SUPPLIERS who can help the user MAKE/MANUFACTURE their product.
 Present them as suppliers who provide ingredients/raw materials, NOT as competitors who make the same finished product.`;
     } else if (entityTypesUsed.includes('formulator') || entityTypesUsed.includes('cdmo')) {

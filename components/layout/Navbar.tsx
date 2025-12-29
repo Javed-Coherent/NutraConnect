@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { UserMenu } from './UserMenu';
-import { SavedIndicator } from './SavedIndicator';
 
 interface NavbarProps {
   user?: {
@@ -46,7 +45,7 @@ export function Navbar({ user }: NavbarProps) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-[150] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center space-x-2">
@@ -79,10 +78,7 @@ export function Navbar({ user }: NavbarProps) {
         <div className="hidden md:flex items-center space-x-3">
           <ThemeToggle />
           {user ? (
-            <>
-              <SavedIndicator />
-              <UserMenu user={user} />
-            </>
+            <UserMenu user={user} />
           ) : (
             <>
               <Button variant="ghost" asChild>

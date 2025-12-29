@@ -3,15 +3,12 @@
 import {
   TrendingUp,
   Scale,
-  ArrowUpRight,
   Sparkles,
   BarChart3,
   ArrowUp,
   ArrowDown,
   ExternalLink,
-  Bell,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MarketStats } from '@/lib/actions/insights';
 
@@ -132,25 +129,6 @@ export function InsightsSidebar({ trendingTopics, marketStats }: InsightsSidebar
         </CardContent>
       </Card>
 
-      {/* Newsletter CTA */}
-      <Card className="bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-600 border-0 overflow-hidden relative">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yIDItNCAyLTRzLTItMi00LTJjLTIgMC00IDItNCAyczIgNCA0IDRjMiAwIDQtMiA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
-        <CardContent className="p-4 text-white relative">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-              <Bell className="h-4 w-4" />
-            </div>
-            <h3 className="font-bold text-base">Stay Updated</h3>
-          </div>
-          <p className="text-xs text-teal-50 mb-3 leading-relaxed">
-            Get weekly industry insights, market reports, and regulatory updates delivered to your inbox.
-          </p>
-          <Button className="w-full bg-white text-teal-600 hover:bg-teal-50 font-semibold shadow-lg h-9 text-sm">
-            Subscribe to Newsletter
-            <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
-          </Button>
-        </CardContent>
-      </Card>
     </div>
   );
 }

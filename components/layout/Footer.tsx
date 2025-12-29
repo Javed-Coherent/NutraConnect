@@ -14,7 +14,7 @@ const footerLinks = {
   resources: [
     { label: 'Industry News', href: '/news' },
     { label: 'Market Insights', href: '/insights' },
-    { label: 'Help Center', href: '/about' },
+    { label: 'Help Center', href: '/help' },
   ],
   company: [
     { label: 'About & Contact', href: '/about' },

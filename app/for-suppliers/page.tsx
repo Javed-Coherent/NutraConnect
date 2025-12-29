@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SEARCH_SUGGESTIONS } from '@/lib/constants';
 import { getTrendingCompaniesAction } from '@/lib/actions/companies';
-import { LatestNewsSection } from '@/components/news/LatestNewsSection';
+import { SupplierInsightsSection } from '@/components/insights/SupplierInsightsSection';
 
 export const metadata: Metadata = {
   title: 'Find Customers - For Suppliers',
@@ -73,7 +73,7 @@ export default async function ForSuppliersPage() {
           <div className="max-w-3xl mx-auto">
             <SearchBar
               variant="hero"
-              placeholder="e.g., distributors for protein supplements..."
+              placeholder="e.g., buyers for protein supplements..."
               suggestions={SEARCH_SUGGESTIONS.suppliers}
               showRegionFilter={true}
             />
@@ -82,12 +82,8 @@ export default async function ForSuppliersPage() {
         </div>
       </section>
 
-      {/* Latest News Section - Lazy Loaded */}
-      <section className="py-12 bg-teal-50/50 dark:bg-gray-800/50">
-        <div className="container mx-auto px-4">
-          <LatestNewsSection limit={2} colorScheme="teal" />
-        </div>
-      </section>
+      {/* Customer Insights Section */}
+      <SupplierInsightsSection limit={4} />
 
       {/* Featured Companies Section */}
       <section className="py-12 bg-teal-50 dark:bg-gray-800">

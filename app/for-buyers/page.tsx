@@ -74,8 +74,9 @@ export default async function ForBuyersPage() {
             <SearchBar
               variant="hero"
               colorTheme="emerald"
-              placeholder="e.g., protein powder manufacturers in Gujarat with GMP certification..."
+              placeholder="Find GMP certified manufacturers in Gujarat"
               suggestions={SEARCH_SUGGESTIONS.buyers}
+              showRegionFilter={true}
             />
           </div>
 

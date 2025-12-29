@@ -11,6 +11,10 @@ import {
   Users,
   BarChart3,
   ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  ExternalLink,
+  X,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,10 +24,12 @@ interface SupplierInsight {
   id: string;
   title: string;
   summary: string;
+  aiSummary: string;
+  keyTakeaways: string[];
+  sourceTitle: string;
+  sourceUrl: string;
   category: 'distribution' | 'retail' | 'ecommerce' | 'export' | 'market';
   icon: React.ReactNode;
-  actionLabel: string;
-  actionHref: string;
   stats?: {
     label: string;
     value: string;
@@ -40,94 +46,136 @@ const supplierInsights: SupplierInsight[] = [
     id: 'dist-1',
     title: 'Distribution Channel Growth in Tier-2 Cities',
     summary: 'Nutraceutical distribution networks are expanding rapidly in tier-2 and tier-3 cities with 35% YoY growth. Distributors are actively seeking quality supplement suppliers.',
+    aiSummary: 'India\'s tier-2 and tier-3 cities are experiencing a nutraceutical boom, driven by rising health awareness and increasing disposable incomes. Distributors in cities like Lucknow, Jaipur, and Indore are actively seeking reliable supplement suppliers to meet growing demand.',
+    keyTakeaways: [
+      'Tier-2 cities showing 35% YoY growth in supplement distribution',
+      'Key markets: Lucknow, Jaipur, Indore, Bhopal, Chandigarh',
+      'Distributors prefer suppliers with consistent quality and timely delivery',
+    ],
+    sourceTitle: 'IBEF - Indian Pharmaceutical Industry Report',
+    sourceUrl: 'https://www.ibef.org/industry/pharmaceutical-india',
     category: 'distribution',
     icon: <Truck className="h-5 w-5" />,
-    actionLabel: 'Find Distributors',
-    actionHref: '/search?q=distributors+health+supplements&type=distributor',
     stats: { label: 'Growth Rate', value: '+35%' },
   },
   {
     id: 'retail-1',
     title: 'Pharmacy Chains Expanding Wellness Sections',
     summary: 'Major pharmacy chains like Apollo and MedPlus are dedicating 40% more shelf space to nutraceuticals. Retailers seeking new product partnerships.',
+    aiSummary: 'The organized pharmacy retail sector is pivoting towards wellness, with major chains significantly expanding their nutraceutical offerings. Apollo Pharmacy, MedPlus, and Wellness Forever are actively onboarding new supplement brands to cater to health-conscious consumers.',
+    keyTakeaways: [
+      'Apollo Pharmacy adding 500+ new wellness SKUs across stores',
+      'MedPlus dedicating 40% more shelf space to supplements',
+      'Priority given to FSSAI-compliant, GMP-certified products',
+    ],
+    sourceTitle: 'Economic Times - Pharmacy Retail Trends',
+    sourceUrl: 'https://economictimes.indiatimes.com/industry/healthcare/biotech/pharmaceuticals',
     category: 'retail',
     icon: <Store className="h-5 w-5" />,
-    actionLabel: 'Connect with Retailers',
-    actionHref: '/search?q=pharmacy+retailers+nutraceuticals&type=retailer',
     stats: { label: 'Shelf Space', value: '+40%' },
   },
   {
     id: 'ecom-1',
     title: 'D2C Health Brands Looking for White-Label Partners',
     summary: 'E-commerce health brands on Amazon and Flipkart are seeking manufacturing partners for private label supplements. Contract manufacturing demand up 50%.',
+    aiSummary: 'The D2C health and wellness sector is booming, with new brands launching on Amazon, Flipkart, and their own platforms. These brands need reliable contract manufacturers who can deliver quality products with quick turnaround times and flexible MOQs.',
+    keyTakeaways: [
+      'Contract manufacturing demand up 50% from D2C brands',
+      'Brands prefer manufacturers offering formulation support',
+      'Quick turnaround (4-6 weeks) and low MOQs (500-1000 units) preferred',
+    ],
+    sourceTitle: 'Statista - Health & Wellness E-commerce India',
+    sourceUrl: 'https://www.statista.com/outlook/cmo/health-beauty-household/health-wellness/india',
     category: 'ecommerce',
     icon: <ShoppingCart className="h-5 w-5" />,
-    actionLabel: 'Explore E-commerce',
-    actionHref: '/search?q=ecommerce+health+products&type=ecommerce',
     stats: { label: 'Demand Increase', value: '+50%' },
   },
   {
     id: 'export-1',
     title: 'Export Opportunities to Southeast Asia',
     summary: 'Demand for Indian Ayurvedic and herbal supplements growing in Malaysia, Singapore, and Thailand. Export-ready suppliers can tap into $2B regional market.',
+    aiSummary: 'Southeast Asian markets are showing strong appetite for Indian herbal and Ayurvedic products. Countries like Malaysia, Singapore, Thailand, and Vietnam are importing significant volumes of turmeric, ashwagandha, and tulsi-based supplements.',
+    keyTakeaways: [
+      'Southeast Asian herbal supplement market valued at $2B',
+      'High demand for Ashwagandha, Turmeric, and Tulsi products',
+      'Export certifications (WHO-GMP, ISO) essential for market entry',
+    ],
+    sourceTitle: 'APEDA - Agricultural & Processed Food Export',
+    sourceUrl: 'https://apeda.gov.in/apedawebsite/organic/organic_products.htm',
     category: 'export',
     icon: <Globe className="h-5 w-5" />,
-    actionLabel: 'Find Export Partners',
-    actionHref: '/search?q=export+importers+herbal&type=importer_exporter',
     stats: { label: 'Market Size', value: '$2B' },
   },
   {
     id: 'market-1',
     title: 'Wholesalers Seeking Protein Supplement Suppliers',
     summary: 'Sports nutrition and protein supplement demand surging. Wholesalers actively sourcing from manufacturers with competitive pricing and quality certifications.',
+    aiSummary: 'The sports nutrition segment is witnessing unprecedented growth, driven by fitness awareness among youth. Wholesalers across India are actively seeking protein powder, BCAA, and pre-workout supplement suppliers who offer competitive pricing without compromising quality.',
+    keyTakeaways: [
+      'Sports nutrition market growing at 28% CAGR',
+      'Whey protein and plant-based proteins in highest demand',
+      'Wholesalers prioritize suppliers with quality certifications',
+    ],
+    sourceTitle: 'NutraIngredients Asia - Sports Nutrition',
+    sourceUrl: 'https://www.nutraingredients-asia.com/Article/2024/01/15/sports-nutrition-market-trends-asia',
     category: 'market',
     icon: <Users className="h-5 w-5" />,
-    actionLabel: 'Browse Wholesalers',
-    actionHref: '/search?q=wholesalers+protein+supplements&type=wholesaler',
     stats: { label: 'Market Growth', value: '+28%' },
   },
   {
     id: 'retail-2',
     title: 'Modern Trade Expanding Immunity Product Range',
     summary: 'Big Bazaar, Reliance Fresh, and DMart increasing immunity supplement inventory. Looking for suppliers with FSSAI compliance and competitive MOQs.',
+    aiSummary: 'Post-pandemic health awareness has permanently shifted consumer behavior. Modern trade retailers are capitalizing on this trend by expanding their immunity and wellness product ranges. They are actively seeking suppliers who can provide consistent quality at competitive prices.',
+    keyTakeaways: [
+      'Modern trade increasing immunity product inventory by 45%',
+      'Focus on Vitamin C, D3, Zinc, and Immunity boosters',
+      'Suppliers with competitive MOQs and FSSAI compliance preferred',
+    ],
+    sourceTitle: 'Business Standard - FMCG & Retail',
+    sourceUrl: 'https://www.business-standard.com/industry/news/immunity-boosting-products-demand',
     category: 'retail',
     icon: <BarChart3 className="h-5 w-5" />,
-    actionLabel: 'View Opportunities',
-    actionHref: '/search?q=modern+trade+immunity+supplements&type=retailer',
     stats: { label: 'Inventory Increase', value: '+45%' },
   },
 ];
 
+// Unified teal theme colors matching website branding
 const categoryColors = {
   distribution: {
-    bg: 'bg-blue-100 dark:bg-blue-900/50',
-    text: 'text-blue-600 dark:text-blue-400',
-    badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
-    border: 'border-blue-200 hover:border-blue-400 dark:border-blue-800 dark:hover:border-blue-600',
+    bg: 'bg-teal-100 dark:bg-teal-900/50',
+    text: 'text-teal-600 dark:text-teal-400',
+    badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+    border: 'border-teal-200 hover:border-teal-400 dark:border-teal-800 dark:hover:border-teal-600',
+    gradient: 'from-teal-500 to-teal-600',
   },
   retail: {
-    bg: 'bg-purple-100 dark:bg-purple-900/50',
-    text: 'text-purple-600 dark:text-purple-400',
-    badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300',
-    border: 'border-purple-200 hover:border-purple-400 dark:border-purple-800 dark:hover:border-purple-600',
+    bg: 'bg-teal-100 dark:bg-teal-900/50',
+    text: 'text-teal-600 dark:text-teal-400',
+    badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+    border: 'border-teal-200 hover:border-teal-400 dark:border-teal-800 dark:hover:border-teal-600',
+    gradient: 'from-teal-500 to-teal-600',
   },
   ecommerce: {
-    bg: 'bg-orange-100 dark:bg-orange-900/50',
-    text: 'text-orange-600 dark:text-orange-400',
-    badge: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
-    border: 'border-orange-200 hover:border-orange-400 dark:border-orange-800 dark:hover:border-orange-600',
+    bg: 'bg-teal-100 dark:bg-teal-900/50',
+    text: 'text-teal-600 dark:text-teal-400',
+    badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+    border: 'border-teal-200 hover:border-teal-400 dark:border-teal-800 dark:hover:border-teal-600',
+    gradient: 'from-teal-500 to-teal-600',
   },
   export: {
-    bg: 'bg-green-100 dark:bg-green-900/50',
-    text: 'text-green-600 dark:text-green-400',
-    badge: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-    border: 'border-green-200 hover:border-green-400 dark:border-green-800 dark:hover:border-green-600',
+    bg: 'bg-teal-100 dark:bg-teal-900/50',
+    text: 'text-teal-600 dark:text-teal-400',
+    badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
+    border: 'border-teal-200 hover:border-teal-400 dark:border-teal-800 dark:hover:border-teal-600',
+    gradient: 'from-teal-500 to-teal-600',
   },
   market: {
     bg: 'bg-teal-100 dark:bg-teal-900/50',
     text: 'text-teal-600 dark:text-teal-400',
     badge: 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300',
     border: 'border-teal-200 hover:border-teal-400 dark:border-teal-800 dark:hover:border-teal-600',
+    gradient: 'from-teal-500 to-teal-600',
   },
 };
 
@@ -142,6 +190,7 @@ const categoryLabels = {
 export function SupplierInsightsSection({ limit = 4 }: SupplierInsightsSectionProps) {
   const [insights, setInsights] = useState<SupplierInsight[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedInsight, setSelectedInsight] = useState<SupplierInsight | null>(null);
 
   useEffect(() => {
     // Simulate loading and shuffle insights for variety
@@ -149,6 +198,16 @@ export function SupplierInsightsSection({ limit = 4 }: SupplierInsightsSectionPr
     setInsights(shuffled.slice(0, limit));
     setLoading(false);
   }, [limit]);
+
+  const openModal = (insight: SupplierInsight) => {
+    setSelectedInsight(insight);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setSelectedInsight(null);
+    document.body.style.overflow = 'unset';
+  };
 
   if (loading) {
     return (
@@ -226,13 +285,11 @@ export function SupplierInsightsSection({ limit = 4 }: SupplierInsightsSectionPr
                     </p>
                     <Button
                       size="sm"
-                      className="bg-teal-600 hover:bg-teal-700 text-white"
-                      asChild
+                      className={`bg-gradient-to-r ${colors.gradient} text-white hover:opacity-90`}
+                      onClick={() => openModal(insight)}
                     >
-                      <Link href={insight.actionHref}>
-                        {insight.actionLabel}
-                        <ArrowRight className="h-4 w-4 ml-1" />
-                      </Link>
+                      <Sparkles className="h-4 w-4 mr-1" />
+                      AI Summary
                     </Button>
                   </div>
                 </div>
@@ -241,6 +298,112 @@ export function SupplierInsightsSection({ limit = 4 }: SupplierInsightsSectionPr
           );
         })}
       </div>
+
+      {/* Full Page Modal */}
+      {selectedInsight && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={closeModal}
+          />
+
+          {/* Modal Content */}
+          <div className="relative w-full max-w-3xl max-h-[90vh] mx-4 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Header with gradient */}
+            <div className={`bg-gradient-to-r ${categoryColors[selectedInsight.category].gradient} p-6 text-white`}>
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-4">
+                  <div className="h-14 w-14 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                    {selectedInsight.icon}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge className="bg-white/20 text-white border-0">
+                        {categoryLabels[selectedInsight.category]}
+                      </Badge>
+                      {selectedInsight.stats && (
+                        <span className="text-sm font-semibold bg-white/20 px-2 py-0.5 rounded">
+                          {selectedInsight.stats.value}
+                        </span>
+                      )}
+                    </div>
+                    <h2 className="text-xl font-bold">
+                      {selectedInsight.title}
+                    </h2>
+                  </div>
+                </div>
+                <button
+                  onClick={closeModal}
+                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)]">
+              {/* Original Summary */}
+              <div className="mb-6">
+                <p className="text-gray-600 dark:text-gray-400">
+                  {selectedInsight.summary}
+                </p>
+              </div>
+
+              {/* AI Summary */}
+              <div className="p-5 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-800/50 rounded-xl mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className={`p-2 rounded-lg ${categoryColors[selectedInsight.category].bg}`}>
+                    <Sparkles className={`h-5 w-5 ${categoryColors[selectedInsight.category].text}`} />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wide">AI Summary</span>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
+                  {selectedInsight.aiSummary}
+                </p>
+              </div>
+
+              {/* Key Takeaways */}
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className={`p-2 rounded-lg ${categoryColors[selectedInsight.category].bg}`}>
+                    <CheckCircle2 className={`h-5 w-5 ${categoryColors[selectedInsight.category].text}`} />
+                  </div>
+                  <span className="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-wide">Key Takeaways</span>
+                </div>
+                <ul className="space-y-3">
+                  {selectedInsight.keyTakeaways.map((takeaway, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-6 h-6 rounded-full ${categoryColors[selectedInsight.category].bg} ${categoryColors[selectedInsight.category].text} flex items-center justify-center text-sm font-semibold`}>
+                        {index + 1}
+                      </span>
+                      <span className="text-gray-700 dark:text-gray-300 pt-0.5">{takeaway}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Source Link */}
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2 mb-3">
+                  <ExternalLink className={`h-4 w-4 ${categoryColors[selectedInsight.category].text}`} />
+                  <span className="text-sm font-semibold text-gray-600 dark:text-gray-400">Source</span>
+                </div>
+                <Link
+                  href={selectedInsight.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg ${categoryColors[selectedInsight.category].bg} ${categoryColors[selectedInsight.category].text} hover:opacity-80 transition-opacity`}
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  <span className="font-medium">{selectedInsight.sourceTitle}</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

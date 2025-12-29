@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Mail, Phone, Bookmark } from 'lucide-react';
+import { Mail, Phone, Building2 } from 'lucide-react';
 import Link from 'next/link';
 import { getWorkspaceStatsAction, getWorkspaceActivityAction } from '@/lib/actions/workspace';
 import { getSavedCompaniesAction } from '@/lib/actions/companies';
@@ -45,8 +45,8 @@ export default async function WorkspacePage() {
           </Button>
           <Button asChild variant="outline" className="dark:border-gray-700 dark:text-gray-300">
             <Link href="/workspace/saved">
-              <Bookmark className="h-4 w-4 mr-2" />
-              View Saved Companies
+              <Building2 className="h-4 w-4 mr-2" />
+              View Added Companies
             </Link>
           </Button>
         </CardContent>

@@ -81,6 +81,63 @@ export const WEBSITE_KNOWLEDGE = {
       ],
       page: '/features/smart-matching',
     },
+    workspace: {
+      name: 'Workspace',
+      description: 'CRM and communication hub for managing outreach to companies',
+      capabilities: [
+        'Send emails to companies directly from the platform',
+        'Make VoIP calls through browser',
+        'Track email and call history',
+        'Manage saved companies for outreach',
+        'View activity feed of all communications',
+      ],
+      pages: {
+        home: '/workspace',
+        emails: '/workspace/emails',
+        calls: '/workspace/calls',
+        saved: '/workspace/saved',
+        activity: '/workspace/activity',
+        settings: '/workspace/settings',
+      },
+    },
+    industryInsights: {
+      name: 'Industry Insights',
+      description: 'Real-time industry news, market trends, and regulatory updates for the nutraceutical sector',
+      categories: ['Market Trends', 'Regulatory', 'Company News', 'Product Launches', 'Import-Export'],
+      features: [
+        'News articles from industry sources',
+        'Market statistics with change indicators',
+        'Trending topics in nutraceuticals',
+        'Regulatory resources and guidelines (FSSAI, Import regulations, etc.)',
+      ],
+      page: '/insights',
+    },
+    industryExpert: {
+      name: 'Industry Expert',
+      description: 'AI-powered chatbot with nutraceutical industry expertise for manufacturing, regulatory, and business guidance',
+      capabilities: [
+        'Manufacturing and formulation guidance',
+        'Regulatory compliance advice (FSSAI, GMP, ISO, etc.)',
+        'Supply chain and sourcing strategies',
+        'CDMO selection and partnership guidance',
+        'Real company recommendations from our database',
+        'Conversation history saved for logged-in users',
+      ],
+      page: '/knowledge',
+      note: 'Different from Help Centre - Industry Expert provides industry expertise and company recommendations, while Help Centre assists with platform usage',
+    },
+    helpCentre: {
+      name: 'Help Centre',
+      description: 'AI assistant for NutraConnect platform questions and navigation help',
+      capabilities: [
+        'Platform navigation assistance',
+        'Feature explanations',
+        'Pricing and billing questions',
+        'Account management guidance',
+        'How-to guides for using NutraConnect',
+      ],
+      page: '/help',
+    },
   },
 
   // Pricing Plans
@@ -309,19 +366,31 @@ export const WEBSITE_KNOWLEDGE = {
     },
     about: {
       path: '/about',
-      description: 'About NutraConnect, our mission and values',
-    },
-    contact: {
-      path: '/contact',
-      description: 'Contact form and support information',
+      description: 'About NutraConnect, our mission and contact information',
     },
     dashboard: {
       path: '/dashboard',
-      description: 'User dashboard (requires login)',
+      description: 'User dashboard with saved companies, search history, and subscription management',
     },
     companyProfile: {
       path: '/company/[id]',
-      description: 'Individual company profile page',
+      description: 'Individual company profile with Overview, Contact Info, and Insights tabs',
+    },
+    industryExpert: {
+      path: '/knowledge',
+      description: 'AI Industry Expert chatbot for nutraceutical business guidance and company recommendations',
+    },
+    insights: {
+      path: '/insights',
+      description: 'Industry news, market trends, and regulatory updates',
+    },
+    workspace: {
+      path: '/workspace',
+      description: 'Communication hub for emails, calls, and managing outreach to companies',
+    },
+    helpCentre: {
+      path: '/help',
+      description: 'Help Centre with AI assistant for platform questions',
     },
   },
 
@@ -372,6 +441,55 @@ export const WEBSITE_KNOWLEDGE = {
         'Choose Pro or Enterprise plan',
         'Complete payment through Razorpay',
         'New features are available immediately',
+      ],
+    },
+    useIndustryExpert: {
+      title: 'How to Use Industry Expert',
+      steps: [
+        'Click "Industry Expert" in the navigation or go to /knowledge',
+        'Type your question about the nutraceutical industry',
+        'Ask about manufacturing, regulations, sourcing, CDMOs, or business strategies',
+        'The AI will provide expert guidance and recommend relevant companies from our database',
+        'Your conversation history is saved if you are logged in',
+      ],
+    },
+    sendEmailFromWorkspace: {
+      title: 'How to Send Emails from Workspace',
+      steps: [
+        'Go to Workspace by clicking "Workspace" in the navigation',
+        'Click "Compose Email" or go to Workspace > Emails',
+        'Enter recipient email and name',
+        'Write your subject and message (you can use templates)',
+        'Click Send - the email will be tracked in your activity history',
+      ],
+    },
+    makeCallFromWorkspace: {
+      title: 'How to Make Calls from Workspace',
+      steps: [
+        'Go to Workspace > Calls',
+        'Enter the phone number you want to call',
+        'Click the call button to initiate a VoIP call through your browser',
+        'Use mute/unmute during the call as needed',
+        'Call history and duration are automatically tracked',
+      ],
+    },
+    accessInsights: {
+      title: 'How to Access Industry Insights',
+      steps: [
+        'Click "Insights" in the navigation or go to /insights',
+        'Browse news articles, market trends, and regulatory updates',
+        'Use category filters to find specific types of content',
+        'Check the sidebar for trending topics and market statistics',
+        'Click on articles to read more from external sources',
+      ],
+    },
+    getHelp: {
+      title: 'How to Get Help',
+      steps: [
+        'Click "Help Center" in your profile dropdown or go to /help',
+        'Chat with our AI assistant about NutraConnect features',
+        'Ask about navigation, pricing, features, or account management',
+        'For industry expertise questions, use the Industry Expert at /knowledge instead',
       ],
     },
   },
@@ -444,6 +562,56 @@ export const WEBSITE_KNOWLEDGE = {
       {
         q: 'Can I list my company on NutraConnect?',
         a: 'Yes! Go to Contact Us page and fill out the listing request form.',
+      },
+    ],
+    workspace: [
+      {
+        q: 'What is the Workspace?',
+        a: 'Workspace is your communication hub for managing outreach to companies. You can send emails, make VoIP calls, and track all your communications in one place.',
+      },
+      {
+        q: 'How do I send emails from Workspace?',
+        a: 'Go to Workspace > Emails, click Compose, enter the recipient details, and write your message. You can also use email templates.',
+      },
+      {
+        q: 'How do I make calls from Workspace?',
+        a: 'Go to Workspace > Calls, enter a phone number, and click the call button. Calls are made through your browser using VoIP technology.',
+      },
+      {
+        q: 'Is my communication history saved?',
+        a: 'Yes! All emails sent and calls made through Workspace are tracked in your activity history. You can view them anytime.',
+      },
+    ],
+    industryExpert: [
+      {
+        q: 'What is the Industry Expert?',
+        a: 'Industry Expert is an AI chatbot with nutraceutical industry expertise. It provides guidance on manufacturing, regulations, supply chains, and recommends companies from our database.',
+      },
+      {
+        q: 'How is Industry Expert different from Help Centre?',
+        a: 'Industry Expert provides nutraceutical industry expertise and company recommendations. Help Centre assists with NutraConnect platform usage, navigation, and features.',
+      },
+      {
+        q: 'Can Industry Expert recommend companies?',
+        a: 'Yes! When you ask about manufacturing, sourcing, or business needs, the Industry Expert can recommend relevant companies from our database of 80,000+ verified businesses.',
+      },
+      {
+        q: 'Is my conversation history saved?',
+        a: 'Yes, if you are logged in. Your conversation history with Industry Expert is saved so you can continue previous discussions.',
+      },
+    ],
+    insights: [
+      {
+        q: 'What are Industry Insights?',
+        a: 'Industry Insights provides real-time news, market trends, and regulatory updates for the nutraceutical sector. Stay informed about the industry.',
+      },
+      {
+        q: 'How often are Insights updated?',
+        a: 'Insights are updated regularly throughout the day with the latest industry news and market data.',
+      },
+      {
+        q: 'Can I filter Insights by category?',
+        a: 'Yes! Filter by Market Trends, Regulatory, Company News, Product Launches, or Import-Export to find relevant content.',
       },
     ],
   },
@@ -534,6 +702,23 @@ ${k.features.companyCompare.description}
 ### 6. ${k.features.smartMatching.name}
 ${k.features.smartMatching.description}
 
+### 7. ${k.features.workspace.name}
+${k.features.workspace.description}
+${k.features.workspace.capabilities.map(c => `- ${c}`).join('\n')}
+
+### 8. ${k.features.industryInsights.name}
+${k.features.industryInsights.description}
+Categories: ${k.features.industryInsights.categories.join(', ')}
+
+### 9. ${k.features.industryExpert.name}
+${k.features.industryExpert.description}
+${k.features.industryExpert.capabilities.map(c => `- ${c}`).join('\n')}
+Note: ${k.features.industryExpert.note}
+
+### 10. ${k.features.helpCentre.name}
+${k.features.helpCentre.description}
+${k.features.helpCentre.capabilities.map(c => `- ${c}`).join('\n')}
+
 ## PRICING PLANS
 
 ### Free Plan (${k.pricing.free.price})
@@ -583,11 +768,15 @@ Available filters:
 - Annual turnover: ${k.search.filters.annualTurnover}
 
 ## KEY PAGES
+- **Industry Expert** (${k.pages.industryExpert.path}): AI chatbot for industry guidance and company recommendations
+- **Insights** (${k.pages.insights.path}): Industry news, market trends, regulatory updates
+- **Workspace** (${k.pages.workspace.path}): Communication hub for emails and calls
+- **Search** (${k.pages.search.path}): Advanced search with filters
 - **For Suppliers** (${k.pages.forSuppliers.path}): Find distributors, retailers, wholesalers
 - **For Buyers** (${k.pages.forBuyers.path}): Find manufacturers, raw material suppliers
-- **Search** (${k.pages.search.path}): Advanced search with filters
 - **Pricing** (${k.pages.pricing.path}): Compare all plans
 - **Dashboard** (${k.pages.dashboard.path}): Manage saved companies, view history
+- **Help Centre** (${k.pages.helpCentre.path}): AI assistant for platform questions
 
 ## COMMON QUESTIONS
 
@@ -599,6 +788,15 @@ ${k.faqs.billing.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
 
 **Features:**
 ${k.faqs.features.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
+
+**Workspace:**
+${k.faqs.workspace.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
+
+**Industry Expert:**
+${k.faqs.industryExpert.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
+
+**Insights:**
+${k.faqs.insights.map(f => `Q: ${f.q}\nA: ${f.a}`).join('\n\n')}
 
 ## GEOGRAPHIC COVERAGE
 - 28 Indian states + Delhi
@@ -633,21 +831,27 @@ ${k.productCategories.join(', ')}
 - If you don't know something, say so and suggest where they might find the answer
 
 ### ACTUAL Header Navigation Links (these are the ONLY links in the header):
-- "For Suppliers" → [For Suppliers](/for-suppliers)
-- "For Buyers" → [For Buyers](/for-buyers)
+- "Industry Expert" → [Industry Expert](/knowledge)
+- "Insights" → [Insights](/insights)
+- "Workspace" → [Workspace](/workspace) (requires login)
 - "Pricing" → [Pricing](/pricing)
 - "About Us" → [About Us](/about)
-- "Contact Us" → [Contact Us](/contact)
 - "Login" button → [Login](/auth/login)
 - "Sign Up Free" button → [Sign Up](/auth/signup)
 
 ### How to Access Key Pages (ALWAYS include clickable links in your response):
+- Industry Expert: Click "Industry Expert" in the header or go to [Industry Expert](/knowledge) for industry guidance and company recommendations
+- Insights: Click "Insights" in the header or go to [Industry Insights](/insights) for news and market trends
+- Workspace: Click "Workspace" in the header or go to [Workspace](/workspace) to manage emails and calls (requires login)
 - Search page: There is no Search link in the header. You can access it directly here: [Search Companies](/search)
 - Dashboard: After logging in, access your dashboard here: [Dashboard](/dashboard)
+- Help Centre: Click "Help Center" in your profile dropdown or go to [Help Centre](/help) for platform assistance
 - Home page: Click the NutraConnect logo or go to [Home](/)
 - Pricing: Click "Pricing" in the header or go to [Pricing](/pricing)
-- For Suppliers: Click "For Suppliers" in the header or go to [For Suppliers](/for-suppliers)
-- For Buyers: Click "For Buyers" in the header or go to [For Buyers](/for-buyers)
+
+### IMPORTANT: Industry Expert vs Help Centre
+- **Industry Expert** ([/knowledge](/knowledge)): For nutraceutical industry questions - manufacturing, regulations, sourcing, CDMOs, business strategies. Can recommend companies from our database.
+- **Help Centre** ([/help](/help)): For NutraConnect platform questions - navigation, features, pricing, account help. This is YOU - you are the Help Centre assistant!
 
 ### Example Responses for Navigation:
 - Q: "How do I search for companies?"
@@ -657,5 +861,11 @@ ${k.productCategories.join(', ')}
   A: "Here's the pricing page: [View Pricing](/pricing). You can also click 'Pricing' in the header navigation."
 
 - Q: "Where can I sign up?"
-  A: "You can create an account here: [Sign Up](/auth/signup). Or click the 'Sign Up Free' button in the top right corner."`;
+  A: "You can create an account here: [Sign Up](/auth/signup). Or click the 'Sign Up Free' button in the top right corner."
+
+- Q: "How do I contact companies?"
+  A: "You can use our Workspace to send emails and make calls to companies. [Go to Workspace](/workspace). You'll need to be logged in to access it."
+
+- Q: "I need advice on manufacturing supplements"
+  A: "For industry expertise like manufacturing advice, use our Industry Expert AI. [Go to Industry Expert](/knowledge). It can provide guidance on manufacturing, regulations, and recommend companies from our database."`;
 }

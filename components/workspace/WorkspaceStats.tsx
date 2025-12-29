@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, Bookmark, Clock, TrendingUp, User, ArrowRight } from 'lucide-react';
+import { Mail, Phone, Building2, Clock, TrendingUp, User, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -160,11 +160,11 @@ export function WorkspaceStats({ stats }: WorkspaceStatsProps) {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-lg bg-teal-100 dark:bg-teal-900/50 flex items-center justify-center">
-                <Bookmark className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                <Building2 className="h-5 w-5 text-teal-600 dark:text-teal-400" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.savedCompanies}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Saved Companies</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Added Companies</p>
               </div>
             </div>
           </CardContent>
@@ -276,7 +276,7 @@ export function WorkspaceStats({ stats }: WorkspaceStatsProps) {
         </Button>
         <Button variant="outline" size="sm" asChild className="dark:border-gray-700 dark:text-gray-300">
           <Link href="/workspace/saved">
-            Saved Companies
+            Added Companies
             <ArrowRight className="h-4 w-4 ml-1" />
           </Link>
         </Button>

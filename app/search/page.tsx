@@ -32,11 +32,12 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
   const initialType = searchParams.get('type') || '';
+  const initialState = searchParams.get('state') || '';
 
   const [sortBy, setSortBy] = useState<'relevance' | 'rating' | 'recent' | 'name'>('relevance');
   const [filters, setFilters] = useState({
     types: initialType ? [initialType as CompanyType] : [],
-    states: [] as string[],
+    states: initialState ? [initialState] : [],
     cities: [] as string[],
     rating: null as number | null,
     verifications: [] as VerificationType[],
@@ -223,12 +224,13 @@ function SearchContent() {
   // Update filters when URL changes
   useEffect(() => {
     const type = searchParams.get('type');
-    if (type) {
-      setFilters(prev => ({
-        ...prev,
-        types: [type as CompanyType]
-      }));
-    }
+    const state = searchParams.get('state');
+
+    setFilters(prev => ({
+      ...prev,
+      types: type ? [type as CompanyType] : prev.types,
+      states: state ? [state] : prev.states,
+    }));
   }, [searchParams]);
 
   const clearFilters = () => {
@@ -266,6 +268,7 @@ function SearchContent() {
         <div className="container mx-auto px-4">
           <SearchBar
             defaultValue={initialQuery}
+            defaultRegion={initialState || 'all'}
             suggestions={allSuggestions}
             placeholder="Search companies, products, or services..."
             showRegionFilter={true}

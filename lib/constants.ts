@@ -212,17 +212,17 @@ export const SUPPLIER_CATEGORIES = [
 
 export const SEARCH_SUGGESTIONS = {
   suppliers: [
-    'distributors looking to stock protein supplements',
-    'retailers seeking new ayurvedic product brands',
-    'wholesalers wanting to expand health supplement range',
-    'pharmacy chains looking for vitamin suppliers',
-    'e-commerce platforms seeking nutraceutical partners',
+    'CDMOs for vitamin C formulations',
+    'CROs for protein supplement testing',
+    'contract manufacturers for ayurvedic products',
+    'packaging partners for nutraceutical tablets',
+    'formulators for herbal extract capsules',
   ],
   buyers: [
     'protein powder manufacturers in Gujarat',
     'ayurvedic product manufacturers with GMP certification',
-    'raw material suppliers for vitamin supplements',
+    'raw material providers for vitamin supplements',
     'contract manufacturers for nutraceuticals',
-    'organic herbal extract suppliers',
+    'organic herbal extract providers',
   ],
 };

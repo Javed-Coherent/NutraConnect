@@ -80,7 +80,7 @@ export function UserMenu({ user }: UserMenuProps) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/about" className="flex items-center cursor-pointer">
+          <Link href="/help" className="flex items-center cursor-pointer">
             <HelpCircle className="mr-2 h-4 w-4" />
             Help Center
           </Link>

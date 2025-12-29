@@ -9,13 +9,14 @@ import {
   MapPin,
   Phone,
   Mail,
-  Bookmark,
   Calendar,
   Shield,
   Award,
   ChevronRight,
   Loader2,
   Send,
+  Plus,
+  Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -190,21 +191,23 @@ export function CompanyHeader({ company, isLoggedIn = false }: CompanyHeaderProp
                 </Button>
               )}
               <Button
-                variant="outline"
+                variant={isSaved ? "default" : "outline"}
                 onClick={handleSave}
                 disabled={saveLoading}
                 className={
                   isSaved
-                    ? "bg-teal-50 dark:bg-teal-900/30 text-teal-500 dark:text-teal-400 border-teal-300 dark:border-teal-700"
-                    : "dark:border-gray-600 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-500 dark:hover:text-teal-400 hover:border-teal-300 dark:hover:border-teal-700"
+                    ? "bg-teal-600 hover:bg-teal-700 text-white"
+                    : "border-teal-500 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/30"
                 }
               >
                 {saveLoading ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : isSaved ? (
+                  <Check className="h-4 w-4 mr-2" />
                 ) : (
-                  <Bookmark className={`h-4 w-4 mr-2 ${isSaved ? 'fill-current' : ''}`} />
+                  <Plus className="h-4 w-4 mr-2" />
                 )}
-                {saveLoading ? 'Saving...' : isSaved ? 'Saved' : 'Save'}
+                {saveLoading ? 'Adding...' : isSaved ? 'Added to Workspace' : 'Add to Workspace'}
               </Button>
             </div>
 

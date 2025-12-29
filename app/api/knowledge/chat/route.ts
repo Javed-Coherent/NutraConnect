@@ -102,17 +102,40 @@ NutraConnect connects you with 80,000+ verified nutraceutical businesses across 
       chatMessages.splice(lastIndex, 0, { role: 'assistant', content: companyDataForAssistant });
     }
 
-    const response = await openai.chat.completions.create({
+    // Create streaming response
+    const stream = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: chatMessages,
       max_tokens: 800,
-      temperature: 0.3, // Lower temperature for more factual responses
+      temperature: 0.3,
+      stream: true,
     });
 
-    const assistantMessage = response.choices[0]?.message?.content ||
-      "I'm sorry, I couldn't generate a response. Please try again.";
+    // Return streaming response
+    const encoder = new TextEncoder();
+    const readableStream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            const text = chunk.choices[0]?.delta?.content || '';
+            if (text) {
+              controller.enqueue(encoder.encode(text));
+            }
+          }
+          controller.close();
+        } catch (error) {
+          controller.error(error);
+        }
+      },
+    });
 
-    return NextResponse.json({ message: assistantMessage });
+    return new Response(readableStream, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'Connection': 'keep-alive',
+      },
+    });
   } catch (error) {
     console.error('Knowledge Chat API error:', error);
 

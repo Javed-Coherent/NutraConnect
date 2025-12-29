@@ -10,8 +10,8 @@ import {
   Users,
   Phone,
   Mail,
-  Bookmark,
-  BookmarkCheck,
+  Plus,
+  Check,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -143,17 +143,22 @@ export function CompanyCard({
             <Mail className="h-4 w-4" />
           </Button>
           <Button
-            variant="ghost"
+            variant={isSaved ? "default" : "outline"}
             size="sm"
             onClick={handleSave}
             disabled={isLoading}
-            className={`h-8 w-8 p-0 ${isSaved ? 'text-teal-600 dark:text-teal-400' : 'text-gray-500'} hover:text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/30`}
-            title={isSaved ? 'Remove from Workspace' : 'Add to Workspace'}
+            className={`h-7 px-2 text-xs ${isSaved ? 'bg-teal-600 hover:bg-teal-700 text-white' : 'border-teal-500 text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/30'}`}
           >
             {isSaved ? (
-              <BookmarkCheck className="h-4 w-4" />
+              <>
+                <Check className="h-3 w-3 mr-1" />
+                Added
+              </>
             ) : (
-              <Bookmark className="h-4 w-4" />
+              <>
+                <Plus className="h-3 w-3 mr-1" />
+                Workspace
+              </>
             )}
           </Button>
         </div>

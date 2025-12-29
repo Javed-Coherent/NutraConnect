@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   Mail,
   Phone,
-  Bookmark,
+  Building2,
   History,
   Settings,
   ChevronLeft,
@@ -51,9 +51,9 @@ const sidebarItems = [
     statsKey: 'callsMade' as const,
   },
   {
-    title: 'Saved Companies',
+    title: 'Added Companies',
     href: '/workspace/saved',
-    icon: Bookmark,
+    icon: Building2,
     statsKey: 'savedCompanies' as const,
   },
   {
